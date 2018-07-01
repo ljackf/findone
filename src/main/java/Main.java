@@ -1,54 +1,72 @@
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.*;
 import info.bitrich.xchangestream.bitfinex.BitfinexStreamingExchange;
-import info.bitrich.xchangestream.bitmex.BitmexStreamingExchange;
+import info.bitrich.xchangestream.bitstamp.BitstampStreamingExchange;
 import info.bitrich.xchangestream.core.StreamingExchange;
 import info.bitrich.xchangestream.core.StreamingExchangeFactory;
-import org.bson.conversions.Bson;
+import info.bitrich.xchangestream.okcoin.OkCoinStreamingExchange;
+import io.reactivex.disposables.Disposable;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.bitstamp.BitstampExchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.service.marketdata.MarketDataService;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
-import org.quartz.impl.StdScheduler;
-import org.quartz.impl.StdSchedulerFactory;
+import si.mazi.rescu.ClientConfig;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.*;
 import java.util.Date;
+
+import static org.knowm.xchange.coinbase.v2.Coinbase.LOG;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-        Exchange bitstamp = ExchangeFactory.INSTANCE.createExchange(BitstampExchange.class.getName());
-
-        MarketDataService marketDataService = bitstamp.getMarketDataService();
-
-        Ticker ticker = marketDataService.getTicker(CurrencyPair.BTC_USD);
-        System.out.println(ticker.toString());
+    public static void main(String[] args) throws IOException, InterruptedException {
+//        Exchange bitstamp = ExchangeFactory.INSTANCE.createExchange(BitstampExchange.class.getName());
+//
+//        MarketDataService marketDataService = bitstamp.getMarketDataService();
+//
+//        Ticker ticker = marketDataService.getTicker(CurrencyPair.BTC_USD);
+//        System.out.println(ticker.toString());
 
 //        File file = new File("/Users/liujiefeng/Downloads/chbtcCNY.csv");
 //        FileInputStream fileInputStream = new FileInputStream(file);
 //        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 //        byte[]buffer = new byte[1024];
-//        MongoClient mongoClient = new MongoClient("localhost", 27017);
-//        MongoDatabase mongoDatabase = mongoClient.getDatabase("ecd");
-//        MongoCollection mongoCollection = mongoDatabase.getCollection("chbtccny");
-//        while (bufferedInputStream.read(buffer,0,1023)!=-1) {
-//            String r = new String(buffer);
-//            System.out.println(r);
-//            BasicDBObject basicDBObject = new BasicDBObject();
-//            mongoCollection.insertOne(basicDBObject.append("data", ).append("price", ).append("amount", ));
-//        }
+        MongoClient mongoClient = new MongoClient("localhost", 27017);
+        DB mongoDatabase = mongoClient.getDB("ecds");
+        DBCollection mongoCollection = mongoDatabase.getCollection("bitaloEUR");
+        String map = "function(){\n" +
+                " var date = new Date(this.timestamp*1000);\n" +
+                "    var dateKey = \"\"+date.getFullYear()+\"-\"+(date.getMonth()+1)+\"-\"+date.getDate();\n" +
+                "    emit(dateKey, 1); \n" +
+                "}";
+        String reduce = "function (key, values) {\n" +
+                "var count=0;"+
+                " for (var i = 0; i < values.length; i++) {\n" +
+                "        count +=1;\n" +
+                "    }\n" +
+                "return count;"+
+                "}";
+        MapReduceCommand cmd = new MapReduceCommand(mongoCollection, map, reduce,
+                null, MapReduceCommand.OutputType.INLINE, null);
+
+        MapReduceOutput out = mongoCollection.mapReduce(cmd);
+        System.out.println(out.results().toString());
+        Statement statement = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ecds?user=root&password=6zeb4s3mt");
+            statement = connection.createStatement();
+            for (DBObject o : out.results()) {
+                System.out.println(o.toString());
+                statement.execute("insert btc_data_history (date, amount) VALUES ('"+ o.get("_id") +"',"+ o.get("value") +")");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 //        try {
 //            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
@@ -56,13 +74,37 @@ public class Main {
 //        } catch (SchedulerException e) {
 //            e.printStackTrace();
 //        }
-        StreamingExchange streamingExchange = StreamingExchangeFactory.INSTANCE.createExchange(BitfinexStreamingExchange.class.getName());
-        streamingExchange.connect().blockingAwait();
-        streamingExchange.getStreamingMarketDataService().getTicker(CurrencyPair.BTC_USD).subscribe(ticker1 ->{
-               System.out.println(ticker1);
-        },Throwable->{
+//        StreamingExchange streamingExchange = StreamingExchangeFactory.INSTANCE.createExchange(BitfinexStreamingExchange.class.getName());
+//        streamingExchange.connect().blockingAwait();
+//        streamingExchange.getStreamingMarketDataService().getTicker(CurrencyPair.BTC_USD).subscribe(ticker1 ->{
+//               System.out.println(ticker1);
+//        },Throwable->{
+//
+//        });
+//        StreamingExchange exchange = StreamingExchangeFactory.INSTANCE.createExchange(OkCoinStreamingExchange.class.getName());
 
-        });
+// Connect to the Exchange WebSocket API. Blocking wait for the connection.
+//        exchange.connect().blockingAwait();
+// Subscribe to live trades update.
+//        exchange.getStreamingMarketDataService()
+//                .getTicker(CurrencyPair.BTC_USD)
+//                .subscribe(trade -> {
+//                    System.out.println(new Date()+"Incoming trade: {}"+ trade);
+//                }, throwable -> {
+//                    LOG.error("Error in subscribing trades.", throwable);
+//                });
+// Subscribe order book data with the reference to the subscription.
+//        Disposable subscription = exchange.getStreamingMarketDataService()
+//                .getOrderBook(CurrencyPair.BTC_USD)
+//                .subscribe(orderBook -> {
+//                    // Do something
+//                });
+
+// Unsubscribe from data order book.
+//        subscription.dispose();
+
+// Disconnect from exchange (non-blocking)
+//        exchange.disconnect().subscribe(() -> LOG.info("Disconnected from the Exchange"));
     }
 
 
