@@ -19,7 +19,7 @@
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ecds?user=root&password=6zeb4s3mt&serverTimezone=UTC");
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from btc_data_history");
+        ResultSet resultSet = statement.executeQuery("select * from btc_data_history ORDER by date");
         List dates = new ArrayList<>();
         List amounts = new ArrayList();
         while (resultSet.next()){
@@ -35,15 +35,17 @@
     }
 %>
 <body>
-    <div id="main" style="width: 600px;height:400px;"></div>
+    <div id="main" style="width: 100%;height:100%;"></div>
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
-
         // 指定图表的配置项和数据
         var option = {
             xAxis: {
                 type: 'category',
+                axisLabel:{
+                    interval:0
+                },
                 data: <%= x_date%>
             },
             yAxis: {
