@@ -9,16 +9,16 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
-        <dependency>
-            <groupId>org.knowm.xchange</groupId>
-            <artifactId>xchange-core</artifactId>
-            <version>4.3.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.knowm.xchange</groupId>
-            <artifactId>xchange-examples</artifactId>
-            <version>4.3.7</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.knowm.xchange</groupId>-->
+            <!--<artifactId>xchange-core</artifactId>-->
+            <!--<version>4.3.7</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.knowm.xchange</groupId>-->
+            <!--<artifactId>xchange-examples</artifactId>-->
+            <!--<version>4.3.7</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>info.bitrich.xchange-stream</groupId>
             <artifactId>xchange-stream-core</artifactId>
@@ -30,28 +30,29 @@
             <artifactId>xchange-bitmex</artifactId>
             <version>4.3.2</version>
         </dependency>
+
         <dependency>
             <groupId>info.bitrich.xchange-stream</groupId>
             <artifactId>xchange-bitfinex</artifactId>
             <version>4.3.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/info.bitrich.xchange-stream/xchange-okcoin -->
-        <dependency>
-            <groupId>info.bitrich.xchange-stream</groupId>
-            <artifactId>xchange-okcoin</artifactId>
-            <version>4.3.2</version>
-        </dependency>
 
-        <dependency>
-            <groupId>info.bitrich.xchange-stream</groupId>
-            <artifactId>xchange-bitstamp</artifactId>
-            <version>4.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.knowm.xchange</groupId>
-            <artifactId>xchange-bitmex</artifactId>
-            <version>4.3.7</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>info.bitrich.xchange-stream</groupId>-->
+            <!--<artifactId>xchange-okcoin</artifactId>-->
+            <!--<version>4.3.2</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>info.bitrich.xchange-stream</groupId>-->
+            <!--<artifactId>xchange-bitstamp</artifactId>-->
+            <!--<version>4.3.2</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.knowm.xchange</groupId>-->
+            <!--<artifactId>xchange-bitmex</artifactId>-->
+            <!--<version>4.3.7</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -59,14 +60,12 @@
             <version>3.1.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/log4j/log4j -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
@@ -88,12 +87,25 @@
             <artifactId>quartz-jobs</artifactId>
             <version>2.2.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.11</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.9</version>
+        </dependency>
+
     </dependencies>
 
 

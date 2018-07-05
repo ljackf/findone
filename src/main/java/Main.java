@@ -1,23 +1,9 @@
 import com.mongodb.*;
-import info.bitrich.xchangestream.bitfinex.BitfinexStreamingExchange;
-import info.bitrich.xchangestream.bitstamp.BitstampStreamingExchange;
-import info.bitrich.xchangestream.core.StreamingExchange;
-import info.bitrich.xchangestream.core.StreamingExchangeFactory;
-import info.bitrich.xchangestream.okcoin.OkCoinStreamingExchange;
-import io.reactivex.disposables.Disposable;
-import org.knowm.xchange.Exchange;
-import org.knowm.xchange.ExchangeFactory;
-import org.knowm.xchange.bitstamp.BitstampExchange;
-import org.knowm.xchange.currency.CurrencyPair;
-import org.knowm.xchange.dto.marketdata.Ticker;
-import org.knowm.xchange.service.marketdata.MarketDataService;
-import si.mazi.rescu.ClientConfig;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.Date;
 
-import static org.knowm.xchange.coinbase.v2.Coinbase.LOG;
 
 public class Main {
 
