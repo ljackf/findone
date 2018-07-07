@@ -7,7 +7,7 @@ import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
-public class AutoClock implements Job{
+public class AutoClock implements Job {
 
     public static void main(String[] args) throws SchedulerException {
         AutoClock autoClock = new AutoClock();
@@ -25,6 +25,6 @@ public class AutoClock implements Job{
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        HttpUtil
+
     }
 }
