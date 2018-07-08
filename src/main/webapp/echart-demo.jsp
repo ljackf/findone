@@ -17,7 +17,7 @@
 <%
     try{
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/ecds?user=root&password=6zeb4s3mt&serverTimezone=UTC");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.1.100:3306/ecds?user=root&password=6zeb4s3mt&serverTimezone=UTC");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("select * from btc_data_history ORDER by date");
         List dates = new ArrayList<>();
