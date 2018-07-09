@@ -1,6 +1,5 @@
 package com.ljf.listeners;
 
-import com.ljf.task.AutoClock;
 import com.ljf.task.BtcMinuteTask;
 import org.apache.log4j.Logger;
 import org.quartz.CronTrigger;
@@ -23,12 +22,12 @@ public class TaskListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         logger.info("任务监听器初始化*****");
         try {
-
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             JobDetail jobDetail = newJob(BtcMinuteTask.class).withIdentity("job_clock", "group_clock").build();
             CronTrigger trigger = newTrigger().withIdentity("trigger_clock", "group_clock")
-                    .withSchedule(cronSchedule("0 */1 * * * ?")).build();
+                    .withSchedule(cronSchedule("*/20 * * * * ?")).build();
             scheduler.scheduleJob(jobDetail, trigger);
+            scheduler.start();
         } catch (SchedulerException e) {
             logger.info("任务监听器初始化失败");
             e.printStackTrace();
