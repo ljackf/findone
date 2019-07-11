@@ -1,5 +1,6 @@
 package com.ljf.task;
 
+import com.ljf.util.HttpUtil;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -11,5 +12,6 @@ public class BtcMinuteTask implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         logger.info("执行任务");
+//        HttpUtil.queryLxxiangInfo();
     }
 }
