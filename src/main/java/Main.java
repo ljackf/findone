@@ -3,6 +3,8 @@ import com.mongodb.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Date;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 
 public class Main {
@@ -53,7 +55,12 @@ public class Main {
         }catch (SQLException e) {
             e.printStackTrace();
         }
+        Future a = new FutureTask(new Runnable() {
+            @Override
+            public void run() {
 
+            }
+        },"") ;
 //        try {
 //            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
 //            scheduler.start();
